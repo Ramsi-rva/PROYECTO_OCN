@@ -6,12 +6,12 @@ using OcnMvc.Models;
 
 namespace OcnMvc.Controllers;
 
-// Controlador de la tabla ocn.cattipozona
-public class CatTipoZonaController : Controller
+// Controlador de la tabla ocn.registroocn
+public class RegistrosOCNController : Controller
 {
-    private readonly OcnContext _context;
+    private readonly OcnDbContext _context;
 
-    public CatTipoZonaController(OcnContext context)
+    public RegistrosOCNController(OcnDbContext context)
     {
         _context = context;
     }
@@ -19,7 +19,9 @@ public class CatTipoZonaController : Controller
     // Muestra la lista de registros
     public async Task<IActionResult> Index()
     {
-        var lista = _context.CatTipoZona
+        var lista = _context.RegistroOCN
+            .Include(x => x.Zona)
+            .Include(x => x.Problematica)
             .AsQueryable();
         lista = lista.Where(x => x.Activo);
         return View(await lista.ToListAsync());
@@ -30,22 +32,32 @@ public class CatTipoZonaController : Controller
     {
         if (id == null) return NotFound();
 
-        var item = await _context.CatTipoZona
-            .FirstOrDefaultAsync(m => m.IdTipoZona == id);
+        var item = await _context.RegistroOCN
+            .Include(x => x.Zona)
+            .Include(x => x.Problematica)
+            .FirstOrDefaultAsync(m => m.IdRegistroOCN == id);
         if (item == null) return NotFound();
         return View(item);
+    }
+
+    // Llena las listas desplegables de las llaves foráneas
+    private void CargarListas(RegistroOCN? item = null)
+    {
+        ViewData["IdZona"] = new SelectList(_context.Zona.Where(x => x.Activo), "IdZona", "Nombre", item?.IdZona);
+        ViewData["IdProblematica"] = new SelectList(_context.Problematica.Where(x => x.Activo), "IdProblematica", "Nombre", item?.IdProblematica);
     }
 
     // Muestra el formulario para agregar
     public IActionResult Create()
     {
+        CargarListas();
         return View();
     }
 
     // Guarda el registro nuevo
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Nombre,Activo")] CatTipoZona item)
+    public async Task<IActionResult> Create([Bind("IdZona,IdProblematica,Descripcion,FechaRegistro,Activo")] RegistroOCN item)
     {
         if (ModelState.IsValid)
         {
@@ -62,6 +74,7 @@ public class CatTipoZonaController : Controller
                 ModelState.AddModelError(string.Empty, "No se pudo guardar: " + (ex.InnerException?.Message ?? ex.Message));
             }
         }
+        CargarListas(item);
         return View(item);
     }
 
@@ -70,17 +83,18 @@ public class CatTipoZonaController : Controller
     {
         if (id == null) return NotFound();
 
-        var item = await _context.CatTipoZona.FirstOrDefaultAsync(m => m.IdTipoZona == id);
+        var item = await _context.RegistroOCN.FirstOrDefaultAsync(m => m.IdRegistroOCN == id);
         if (item == null) return NotFound();
+        CargarListas(item);
         return View(item);
     }
 
     // Guarda los cambios del registro
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, [Bind("IdTipoZona,Nombre,Activo")] CatTipoZona item)
+    public async Task<IActionResult> Edit(int id, [Bind("IdRegistroOCN,IdZona,IdProblematica,Descripcion,FechaRegistro,Activo")] RegistroOCN item)
     {
-        if (id != item.IdTipoZona) return NotFound();
+        if (id != item.IdRegistroOCN) return NotFound();
 
         if (ModelState.IsValid)
         {
@@ -93,7 +107,7 @@ public class CatTipoZonaController : Controller
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!await _context.CatTipoZona.AnyAsync(e => e.IdTipoZona == id)) return NotFound();
+                if (!await _context.RegistroOCN.AnyAsync(e => e.IdRegistroOCN == id)) return NotFound();
                 throw;
             }
             catch (DbUpdateException ex)
@@ -101,6 +115,7 @@ public class CatTipoZonaController : Controller
                 ModelState.AddModelError(string.Empty, "No se pudo guardar: " + (ex.InnerException?.Message ?? ex.Message));
             }
         }
+        CargarListas(item);
         return View(item);
     }
 
@@ -109,8 +124,10 @@ public class CatTipoZonaController : Controller
     {
         if (id == null) return NotFound();
 
-        var item = await _context.CatTipoZona
-            .FirstOrDefaultAsync(m => m.IdTipoZona == id);
+        var item = await _context.RegistroOCN
+            .Include(x => x.Zona)
+            .Include(x => x.Problematica)
+            .FirstOrDefaultAsync(m => m.IdRegistroOCN == id);
         if (item == null) return NotFound();
         return View(item);
     }
@@ -120,7 +137,7 @@ public class CatTipoZonaController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var item = await _context.CatTipoZona.FirstOrDefaultAsync(m => m.IdTipoZona == id);
+        var item = await _context.RegistroOCN.FirstOrDefaultAsync(m => m.IdRegistroOCN == id);
         if (item != null)
         {
             // solo se marca como inactivo, no se borra de la base

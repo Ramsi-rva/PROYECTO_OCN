@@ -6,12 +6,12 @@ using OcnMvc.Models;
 
 namespace OcnMvc.Controllers;
 
-// Controlador de la tabla ocn.cattipoevidencia
-public class CatTipoEvidenciaController : Controller
+// Controlador de la tabla ocn.problematica
+public class ProblematicasController : Controller
 {
-    private readonly OcnContext _context;
+    private readonly OcnDbContext _context;
 
-    public CatTipoEvidenciaController(OcnContext context)
+    public ProblematicasController(OcnDbContext context)
     {
         _context = context;
     }
@@ -19,7 +19,9 @@ public class CatTipoEvidenciaController : Controller
     // Muestra la lista de registros
     public async Task<IActionResult> Index()
     {
-        var lista = _context.CatTipoEvidencia
+        var lista = _context.Problematica
+            .Include(x => x.Categoria)
+            .Include(x => x.ProblematicaPadre)
             .AsQueryable();
         lista = lista.Where(x => x.Activo);
         return View(await lista.ToListAsync());
@@ -30,22 +32,32 @@ public class CatTipoEvidenciaController : Controller
     {
         if (id == null) return NotFound();
 
-        var item = await _context.CatTipoEvidencia
-            .FirstOrDefaultAsync(m => m.IdTipoEvidencia == id);
+        var item = await _context.Problematica
+            .Include(x => x.Categoria)
+            .Include(x => x.ProblematicaPadre)
+            .FirstOrDefaultAsync(m => m.IdProblematica == id);
         if (item == null) return NotFound();
         return View(item);
+    }
+
+    // Llena las listas desplegables de las llaves foráneas
+    private void CargarListas(Problematica? item = null)
+    {
+        ViewData["IdCategoria"] = new SelectList(_context.CategoriaProblematica.Where(x => x.Activo), "IdCategoria", "Nombre", item?.IdCategoria);
+        ViewData["IdProblematicaPadre"] = new SelectList(_context.Problematica.Where(x => x.Activo), "IdProblematica", "Nombre", item?.IdProblematicaPadre);
     }
 
     // Muestra el formulario para agregar
     public IActionResult Create()
     {
+        CargarListas();
         return View();
     }
 
     // Guarda el registro nuevo
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Nombre,Activo")] CatTipoEvidencia item)
+    public async Task<IActionResult> Create([Bind("IdCategoria,IdProblematicaPadre,Nombre,Descripcion,Activo")] Problematica item)
     {
         if (ModelState.IsValid)
         {
@@ -62,6 +74,7 @@ public class CatTipoEvidenciaController : Controller
                 ModelState.AddModelError(string.Empty, "No se pudo guardar: " + (ex.InnerException?.Message ?? ex.Message));
             }
         }
+        CargarListas(item);
         return View(item);
     }
 
@@ -70,17 +83,18 @@ public class CatTipoEvidenciaController : Controller
     {
         if (id == null) return NotFound();
 
-        var item = await _context.CatTipoEvidencia.FirstOrDefaultAsync(m => m.IdTipoEvidencia == id);
+        var item = await _context.Problematica.FirstOrDefaultAsync(m => m.IdProblematica == id);
         if (item == null) return NotFound();
+        CargarListas(item);
         return View(item);
     }
 
     // Guarda los cambios del registro
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, [Bind("IdTipoEvidencia,Nombre,Activo")] CatTipoEvidencia item)
+    public async Task<IActionResult> Edit(int id, [Bind("IdProblematica,IdCategoria,IdProblematicaPadre,Nombre,Descripcion,Activo")] Problematica item)
     {
-        if (id != item.IdTipoEvidencia) return NotFound();
+        if (id != item.IdProblematica) return NotFound();
 
         if (ModelState.IsValid)
         {
@@ -93,7 +107,7 @@ public class CatTipoEvidenciaController : Controller
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!await _context.CatTipoEvidencia.AnyAsync(e => e.IdTipoEvidencia == id)) return NotFound();
+                if (!await _context.Problematica.AnyAsync(e => e.IdProblematica == id)) return NotFound();
                 throw;
             }
             catch (DbUpdateException ex)
@@ -101,6 +115,7 @@ public class CatTipoEvidenciaController : Controller
                 ModelState.AddModelError(string.Empty, "No se pudo guardar: " + (ex.InnerException?.Message ?? ex.Message));
             }
         }
+        CargarListas(item);
         return View(item);
     }
 
@@ -109,8 +124,10 @@ public class CatTipoEvidenciaController : Controller
     {
         if (id == null) return NotFound();
 
-        var item = await _context.CatTipoEvidencia
-            .FirstOrDefaultAsync(m => m.IdTipoEvidencia == id);
+        var item = await _context.Problematica
+            .Include(x => x.Categoria)
+            .Include(x => x.ProblematicaPadre)
+            .FirstOrDefaultAsync(m => m.IdProblematica == id);
         if (item == null) return NotFound();
         return View(item);
     }
@@ -120,7 +137,7 @@ public class CatTipoEvidenciaController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var item = await _context.CatTipoEvidencia.FirstOrDefaultAsync(m => m.IdTipoEvidencia == id);
+        var item = await _context.Problematica.FirstOrDefaultAsync(m => m.IdProblematica == id);
         if (item != null)
         {
             // solo se marca como inactivo, no se borra de la base
