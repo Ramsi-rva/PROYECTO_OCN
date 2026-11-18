@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "OcnMvc": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:36291;http://localhost:36292"
+    }
+  }
+}
