@@ -1,0 +1,60 @@
+@model Evidencia
+
+@{
+    ViewData["Title"] = "Editar: Evidencia";
+}
+
+<h1 class="h3">Editar: Evidencia</h1>
+<hr />
+
+<div class="row">
+<div class="col-md-8 col-lg-6">
+<form asp-action="Edit" asp-route-id="@Model.IdEvidencia" method="post">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+    <input type="hidden" asp-for="IdEvidencia" />
+    <div class="mb-3">
+        <label asp-for="IdObservacionProblematica" class="form-label">Problemática observada</label>
+        <select asp-for="IdObservacionProblematica" asp-items="ViewBag.IdObservacionProblematica" class="form-select">
+            <option value="">-- Selecciona --</option>
+        </select>
+        <span asp-validation-for="IdObservacionProblematica" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="IdTipoEvidencia" class="form-label">Tipo de evidencia</label>
+        <select asp-for="IdTipoEvidencia" asp-items="ViewBag.IdTipoEvidencia" class="form-select">
+            <option value="">-- Selecciona --</option>
+        </select>
+        <span asp-validation-for="IdTipoEvidencia" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="IdFuente" class="form-label">Fuente</label>
+        <select asp-for="IdFuente" asp-items="ViewBag.IdFuente" class="form-select">
+            <option value="">-- Selecciona --</option>
+        </select>
+        <span asp-validation-for="IdFuente" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="NumeroMenciones" class="form-label">Número de menciones</label>
+        <input asp-for="NumeroMenciones" class="form-control" />
+        <span asp-validation-for="NumeroMenciones" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="DescripcionBreve" class="form-label">Descripción breve</label>
+        <textarea asp-for="DescripcionBreve" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="DescripcionBreve" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="FechaRegistro" class="form-label">Fecha de registro</label>
+        <input asp-for="FechaRegistro" class="form-control" />
+        <span asp-validation-for="FechaRegistro" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+</div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

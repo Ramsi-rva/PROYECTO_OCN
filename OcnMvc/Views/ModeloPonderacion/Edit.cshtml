@@ -1,0 +1,36 @@
+@model ModeloPonderacion
+
+@{
+    ViewData["Title"] = "Editar: Ponderación";
+}
+
+<h1 class="h3">Editar: Ponderación</h1>
+<hr />
+
+<div class="row">
+<div class="col-md-8 col-lg-6">
+<form asp-action="Edit" asp-route-idModelo="@Model.IdModelo" asp-route-variable="@Model.Variable" method="post">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+    <div class="mb-3">
+        <label asp-for="IdModelo" class="form-label">Modelo</label>
+        <input asp-for="IdModelo" class="form-control" readonly />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Variable" class="form-label">Variable</label>
+        <input asp-for="Variable" class="form-control" readonly />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Peso" class="form-label">Peso</label>
+        <input asp-for="Peso" class="form-control" />
+        <span asp-validation-for="Peso" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+</div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

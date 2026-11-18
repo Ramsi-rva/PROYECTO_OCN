@@ -1,0 +1,29 @@
+@model Usuario
+
+@{
+    ViewData["Title"] = "Eliminar: Usuario";
+}
+
+<h1 class="h3">¿Seguro que quieres eliminar este registro?</h1>
+<div class="alert alert-warning">El registro no se borra de la base de datos: se marca como inactivo y deja de aparecer en la lista.</div>
+
+<dl class="row">
+    <dt class="col-sm-3">#</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.IdUsuario)</dd>
+    <dt class="col-sm-3">Nombre de usuario</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.NombreUsuario)</dd>
+    <dt class="col-sm-3">Nombre completo</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.NombreCompleto)</dd>
+    <dt class="col-sm-3">Correo institucional</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.CorreoInstitucional)</dd>
+    <dt class="col-sm-3">Activo</dt>
+    <dd class="col-sm-9">@(Model.Activo ? "Sí" : "No")</dd>
+    <dt class="col-sm-3">Fecha de alta</dt>
+    <dd class="col-sm-9">@(string.Format("{0:dd/MM/yyyy HH:mm}", Model.FechaAlta))</dd>
+</dl>
+
+<form asp-action="Delete" asp-route-id="@Model.IdUsuario" method="post">
+    <input type="hidden" asp-for="IdUsuario" />
+    <button type="submit" class="btn btn-danger">Dar de baja</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

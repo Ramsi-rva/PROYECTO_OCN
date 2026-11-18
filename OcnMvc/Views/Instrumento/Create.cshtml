@@ -1,0 +1,72 @@
+@model Instrumento
+
+@{
+    ViewData["Title"] = "Nuevo: Instrumento";
+}
+
+<h1 class="h3">Nuevo: Instrumento</h1>
+<hr />
+
+<div class="row">
+<div class="col-md-8 col-lg-6">
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+    <div class="mb-3">
+        <label asp-for="NombreFamilia" class="form-label">Nombre de familia</label>
+        <input asp-for="NombreFamilia" class="form-control" />
+        <span asp-validation-for="NombreFamilia" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Version" class="form-label">Versión</label>
+        <input asp-for="Version" class="form-control" />
+        <span asp-validation-for="Version" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="IdMetodo" class="form-label">Método</label>
+        <select asp-for="IdMetodo" asp-items="ViewBag.IdMetodo" class="form-select">
+            <option value="">-- Selecciona --</option>
+        </select>
+        <span asp-validation-for="IdMetodo" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Estado" class="form-label">Estado</label>
+        <input asp-for="Estado" class="form-control" />
+        <span asp-validation-for="Estado" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="IdInstrumentoAnterior" class="form-label">Instrumento anterior</label>
+        <select asp-for="IdInstrumentoAnterior" asp-items="ViewBag.IdInstrumentoAnterior" class="form-select">
+            <option value="">-- Selecciona --</option>
+        </select>
+        <span asp-validation-for="IdInstrumentoAnterior" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="FechaVersion" class="form-label">Fecha de versión</label>
+        <input asp-for="FechaVersion" type="date" class="form-control" />
+        <span asp-validation-for="FechaVersion" class="text-danger"></span>
+    </div>
+    <div class="form-check mb-3">
+        @if (Model == null)
+        {
+            @* Registro nuevo: la casilla aparece marcada por defecto *@
+            <input type="checkbox" id="Activo" name="Activo" value="true" class="form-check-input" checked />
+            <input type="hidden" name="Activo" value="false" />
+        }
+        else
+        {
+            <input asp-for="Activo" class="form-check-input" />
+        }
+        <label asp-for="Activo" class="form-check-label">Activo</label>
+        <span asp-validation-for="Activo" class="text-danger d-block"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+</div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

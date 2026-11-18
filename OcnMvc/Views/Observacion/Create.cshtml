@@ -1,0 +1,41 @@
+@model Observacion
+
+@{
+    ViewData["Title"] = "Nuevo: Observación";
+}
+
+<h1 class="h3">Nuevo: Observación</h1>
+<hr />
+
+<div class="row">
+<div class="col-md-8 col-lg-6">
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+    <div class="mb-3">
+        <label asp-for="IdLevantamiento" class="form-label">Levantamiento</label>
+        <select asp-for="IdLevantamiento" asp-items="ViewBag.IdLevantamiento" class="form-select">
+            <option value="">-- Selecciona --</option>
+        </select>
+        <span asp-validation-for="IdLevantamiento" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="NotaContexto" class="form-label">Nota de contexto</label>
+        <textarea asp-for="NotaContexto" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="NotaContexto" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="FechaRegistro" class="form-label">Fecha de registro</label>
+        <input asp-for="FechaRegistro" class="form-control" />
+        <span asp-validation-for="FechaRegistro" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+</div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

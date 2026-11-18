@@ -1,0 +1,24 @@
+@model Fuente
+
+@{
+    ViewData["Title"] = "Detalle: Fuente";
+}
+
+<h1 class="h3">Detalle: Fuente</h1>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">#</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.IdFuente)</dd>
+    <dt class="col-sm-3">Tipo de fuente</dt>
+    <dd class="col-sm-9">@Model.TipoFuente?.Nombre</dd>
+    <dt class="col-sm-3">Organización</dt>
+    <dd class="col-sm-9">@Model.Organizacion?.Nombre</dd>
+    <dt class="col-sm-3">Descripción</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.Descripcion)</dd>
+    <dt class="col-sm-3">Activo</dt>
+    <dd class="col-sm-9">@(Model.Activo ? "Sí" : "No")</dd>
+</dl>
+
+<a asp-action="Edit" asp-route-id="@Model.IdFuente" class="btn btn-primary">Editar</a>
+<a asp-action="Index" class="btn btn-secondary">Regresar a la lista</a>

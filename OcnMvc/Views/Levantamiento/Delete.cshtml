@@ -1,0 +1,35 @@
+@model Levantamiento
+
+@{
+    ViewData["Title"] = "Eliminar: Levantamiento";
+}
+
+<h1 class="h3">¿Seguro que quieres eliminar este registro?</h1>
+<div class="alert alert-warning">Esta acción elimina el registro de la base de datos de forma permanente.</div>
+
+<dl class="row">
+    <dt class="col-sm-3">#</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.IdLevantamiento)</dd>
+    <dt class="col-sm-3">Código de levantamiento</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.CodigoLevantamiento)</dd>
+    <dt class="col-sm-3">Zona</dt>
+    <dd class="col-sm-9">@Model.Zona?.Nombre</dd>
+    <dt class="col-sm-3">Periodo</dt>
+    <dd class="col-sm-9">@Model.Periodo?.Nombre</dd>
+    <dt class="col-sm-3">Método</dt>
+    <dd class="col-sm-9">@Model.Metodo?.Nombre</dd>
+    <dt class="col-sm-3">Fecha de levantamiento</dt>
+    <dd class="col-sm-9">@(string.Format("{0:dd/MM/yyyy}", Model.FechaLevantamiento))</dd>
+    <dt class="col-sm-3">Número de participantes aprox.</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.NumeroParticipantesAprox)</dd>
+    <dt class="col-sm-3">Observaciones metodológicas</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.ObservacionesMetodologicas)</dd>
+    <dt class="col-sm-3">Fecha de captura</dt>
+    <dd class="col-sm-9">@(string.Format("{0:dd/MM/yyyy HH:mm}", Model.FechaCaptura))</dd>
+</dl>
+
+<form asp-action="Delete" asp-route-id="@Model.IdLevantamiento" method="post">
+    <input type="hidden" asp-for="IdLevantamiento" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

@@ -1,0 +1,36 @@
+@model Recurso
+
+@{
+    ViewData["Title"] = "Detalle: Recurso";
+}
+
+<h1 class="h3">Detalle: Recurso</h1>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">#</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.IdRecurso)</dd>
+    <dt class="col-sm-3">Código de recurso</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.CodigoRecurso)</dd>
+    <dt class="col-sm-3">Nombre</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.Nombre)</dd>
+    <dt class="col-sm-3">Tipo de recurso</dt>
+    <dd class="col-sm-9">@Model.TipoRecurso?.Nombre</dd>
+    <dt class="col-sm-3">Organización responsable</dt>
+    <dd class="col-sm-9">@Model.OrganizacionResponsable?.Nombre</dd>
+    <dt class="col-sm-3">Estado de recurso</dt>
+    <dd class="col-sm-9">@Model.EstadoRecurso?.Nombre</dd>
+    <dt class="col-sm-3">Costo de recurso</dt>
+    <dd class="col-sm-9">@Model.CostoRecurso?.Nombre</dd>
+    <dt class="col-sm-3">Horario general</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.HorarioGeneral)</dd>
+    <dt class="col-sm-3">Capacidad aproximada</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.CapacidadAproximada)</dd>
+    <dt class="col-sm-3">Conocimiento de la comunidad</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.ConocimientoComunidad)</dd>
+    <dt class="col-sm-3">Activo</dt>
+    <dd class="col-sm-9">@(Model.Activo ? "Sí" : "No")</dd>
+</dl>
+
+<a asp-action="Edit" asp-route-id="@Model.IdRecurso" class="btn btn-primary">Editar</a>
+<a asp-action="Index" class="btn btn-secondary">Regresar a la lista</a>

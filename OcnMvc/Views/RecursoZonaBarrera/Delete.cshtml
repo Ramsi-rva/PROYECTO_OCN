@@ -1,0 +1,31 @@
+@model RecursoZonaBarrera
+
+@{
+    ViewData["Title"] = "Eliminar: Barrera de acceso";
+}
+
+<h1 class="h3">¿Seguro que quieres eliminar este registro?</h1>
+<div class="alert alert-warning">Esta acción elimina el registro de la base de datos de forma permanente.</div>
+
+<dl class="row">
+    <dt class="col-sm-3">#</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.IdRecursoZonaBarrera)</dd>
+    <dt class="col-sm-3">Recurso</dt>
+    <dd class="col-sm-9">@Model.Recurso?.Nombre</dd>
+    <dt class="col-sm-3">Zona</dt>
+    <dd class="col-sm-9">@Model.Zona?.Nombre</dd>
+    <dt class="col-sm-3">Barrera</dt>
+    <dd class="col-sm-9">@Model.Barrera?.Nombre</dd>
+    <dt class="col-sm-3">Grupo poblacional</dt>
+    <dd class="col-sm-9">@Model.GrupoPoblacional?.Nombre</dd>
+    <dt class="col-sm-3">Fecha de registro</dt>
+    <dd class="col-sm-9">@(string.Format("{0:dd/MM/yyyy}", Model.FechaRegistro))</dd>
+    <dt class="col-sm-3">Notas</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.Notas)</dd>
+</dl>
+
+<form asp-action="Delete" asp-route-id="@Model.IdRecursoZonaBarrera" method="post">
+    <input type="hidden" asp-for="IdRecursoZonaBarrera" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

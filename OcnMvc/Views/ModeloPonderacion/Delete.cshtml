@@ -1,0 +1,24 @@
+@model ModeloPonderacion
+
+@{
+    ViewData["Title"] = "Eliminar: Ponderación";
+}
+
+<h1 class="h3">¿Seguro que quieres eliminar este registro?</h1>
+<div class="alert alert-warning">Esta acción elimina el registro de la base de datos de forma permanente.</div>
+
+<dl class="row">
+    <dt class="col-sm-3">Modelo</dt>
+    <dd class="col-sm-9">@Model.Modelo?.Nombre</dd>
+    <dt class="col-sm-3">Variable</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.Variable)</dd>
+    <dt class="col-sm-3">Peso</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.Peso)</dd>
+</dl>
+
+<form asp-action="Delete" asp-route-idModelo="@Model.IdModelo" asp-route-variable="@Model.Variable" method="post">
+    <input type="hidden" asp-for="IdModelo" />
+    <input type="hidden" asp-for="Variable" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

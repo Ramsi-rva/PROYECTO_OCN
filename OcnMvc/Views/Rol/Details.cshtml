@@ -1,0 +1,22 @@
+@model Rol
+
+@{
+    ViewData["Title"] = "Detalle: Rol";
+}
+
+<h1 class="h3">Detalle: Rol</h1>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">#</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.IdRol)</dd>
+    <dt class="col-sm-3">Nombre de rol</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.NombreRol)</dd>
+    <dt class="col-sm-3">Descripción</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.Descripcion)</dd>
+    <dt class="col-sm-3">Activo</dt>
+    <dd class="col-sm-9">@(Model.Activo ? "Sí" : "No")</dd>
+</dl>
+
+<a asp-action="Edit" asp-route-id="@Model.IdRol" class="btn btn-primary">Editar</a>
+<a asp-action="Index" class="btn btn-secondary">Regresar a la lista</a>

@@ -1,0 +1,23 @@
+@model CatCostoRecurso
+
+@{
+    ViewData["Title"] = "Eliminar: Costo de recurso";
+}
+
+<h1 class="h3">¿Seguro que quieres eliminar este registro?</h1>
+<div class="alert alert-warning">El registro no se borra de la base de datos: se marca como inactivo y deja de aparecer en la lista.</div>
+
+<dl class="row">
+    <dt class="col-sm-3">#</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.IdCostoRecurso)</dd>
+    <dt class="col-sm-3">Nombre</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.Nombre)</dd>
+    <dt class="col-sm-3">Activo</dt>
+    <dd class="col-sm-9">@(Model.Activo ? "Sí" : "No")</dd>
+</dl>
+
+<form asp-action="Delete" asp-route-id="@Model.IdCostoRecurso" method="post">
+    <input type="hidden" asp-for="IdCostoRecurso" />
+    <button type="submit" class="btn btn-danger">Dar de baja</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

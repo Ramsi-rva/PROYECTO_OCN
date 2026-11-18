@@ -1,0 +1,31 @@
+@model ObservacionProblematica
+
+@{
+    ViewData["Title"] = "Eliminar: Problemática observada";
+}
+
+<h1 class="h3">¿Seguro que quieres eliminar este registro?</h1>
+<div class="alert alert-warning">Esta acción elimina el registro de la base de datos de forma permanente.</div>
+
+<dl class="row">
+    <dt class="col-sm-3">#</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.IdObservacionProblematica)</dd>
+    <dt class="col-sm-3">Observación</dt>
+    <dd class="col-sm-9">@Model.Observacion?.NotaContexto</dd>
+    <dt class="col-sm-3">Problemática</dt>
+    <dd class="col-sm-9">@Model.Problematica?.Nombre</dd>
+    <dt class="col-sm-3">Magnitud</dt>
+    <dd class="col-sm-9">@Model.Magnitud?.Nombre</dd>
+    <dt class="col-sm-3">Gravedad</dt>
+    <dd class="col-sm-9">@Model.Gravedad?.Nombre</dd>
+    <dt class="col-sm-3">Frecuencia</dt>
+    <dd class="col-sm-9">@Model.Frecuencia?.Nombre</dd>
+    <dt class="col-sm-3">Nivel de confianza</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.NivelConfianza)</dd>
+</dl>
+
+<form asp-action="Delete" asp-route-id="@Model.IdObservacionProblematica" method="post">
+    <input type="hidden" asp-for="IdObservacionProblematica" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

@@ -1,0 +1,33 @@
+@model Instrumento
+
+@{
+    ViewData["Title"] = "Eliminar: Instrumento";
+}
+
+<h1 class="h3">¿Seguro que quieres eliminar este registro?</h1>
+<div class="alert alert-warning">El registro no se borra de la base de datos: se marca como inactivo y deja de aparecer en la lista.</div>
+
+<dl class="row">
+    <dt class="col-sm-3">#</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.IdInstrumento)</dd>
+    <dt class="col-sm-3">Nombre de familia</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.NombreFamilia)</dd>
+    <dt class="col-sm-3">Versión</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.Version)</dd>
+    <dt class="col-sm-3">Método</dt>
+    <dd class="col-sm-9">@Model.Metodo?.Nombre</dd>
+    <dt class="col-sm-3">Estado</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.Estado)</dd>
+    <dt class="col-sm-3">Instrumento anterior</dt>
+    <dd class="col-sm-9">@Model.InstrumentoAnterior?.NombreFamilia</dd>
+    <dt class="col-sm-3">Fecha de versión</dt>
+    <dd class="col-sm-9">@(string.Format("{0:dd/MM/yyyy}", Model.FechaVersion))</dd>
+    <dt class="col-sm-3">Activo</dt>
+    <dd class="col-sm-9">@(Model.Activo ? "Sí" : "No")</dd>
+</dl>
+
+<form asp-action="Delete" asp-route-id="@Model.IdInstrumento" method="post">
+    <input type="hidden" asp-for="IdInstrumento" />
+    <button type="submit" class="btn btn-danger">Dar de baja</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
