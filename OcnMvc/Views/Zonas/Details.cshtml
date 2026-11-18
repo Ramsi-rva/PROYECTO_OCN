@@ -1,0 +1,28 @@
+@model Zona
+
+@{
+    ViewData["Title"] = "Detalle de zona";
+}
+
+<h1 class="h3">Detalle de zona</h1>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">#</dt>
+    <dd class="col-sm-9">@Model.IdZona</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.CodigoZona)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.CodigoZona)</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Nombre)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.Nombre)</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Division)</dt>
+    <dd class="col-sm-9">@Model.Division?.Nombre</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.TipoZona)</dt>
+    <dd class="col-sm-9">@Model.TipoZona?.Nombre</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.DescripcionGeneral)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.DescripcionGeneral)</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.ReferenciaGeograficaAprox)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.ReferenciaGeograficaAprox)</dd>
+</dl>
+
+<a asp-action="Edit" asp-route-id="@Model.IdZona" class="btn btn-primary">Editar</a>
+<a asp-action="Index" class="btn btn-secondary">Regresar a la lista</a>

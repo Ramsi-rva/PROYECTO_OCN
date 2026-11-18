@@ -1,0 +1,24 @@
+@model Problematica
+
+@{
+    ViewData["Title"] = "Detalle de problemática";
+}
+
+<h1 class="h3">Detalle de problemática</h1>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">#</dt>
+    <dd class="col-sm-9">@Model.IdProblematica</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Nombre)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.Nombre)</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Categoria)</dt>
+    <dd class="col-sm-9">@Model.Categoria?.Nombre</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.ProblematicaPadre)</dt>
+    <dd class="col-sm-9">@Model.ProblematicaPadre?.Nombre</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Descripcion)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.Descripcion)</dd>
+</dl>
+
+<a asp-action="Edit" asp-route-id="@Model.IdProblematica" class="btn btn-primary">Editar</a>
+<a asp-action="Index" class="btn btn-secondary">Regresar a la lista</a>

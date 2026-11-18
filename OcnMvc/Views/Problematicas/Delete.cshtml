@@ -1,0 +1,27 @@
+@model Problematica
+
+@{
+    ViewData["Title"] = "Dar de baja";
+}
+
+<h1 class="h3">¿Seguro que quieres dar de baja este registro?</h1>
+<div class="alert alert-warning">El registro no se borra de la base de datos: se marca como inactivo y deja de aparecer en la lista.</div>
+
+<dl class="row">
+    <dt class="col-sm-3">#</dt>
+    <dd class="col-sm-9">@Model.IdProblematica</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Nombre)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.Nombre)</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Categoria)</dt>
+    <dd class="col-sm-9">@Model.Categoria?.Nombre</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.ProblematicaPadre)</dt>
+    <dd class="col-sm-9">@Model.ProblematicaPadre?.Nombre</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Descripcion)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.Descripcion)</dd>
+</dl>
+
+<form asp-action="Delete" asp-route-id="@Model.IdProblematica" method="post">
+    <input type="hidden" asp-for="IdProblematica" />
+    <button type="submit" class="btn btn-danger">Dar de baja</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

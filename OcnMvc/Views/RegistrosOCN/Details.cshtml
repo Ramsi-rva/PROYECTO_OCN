@@ -1,0 +1,24 @@
+@model RegistroOCN
+
+@{
+    ViewData["Title"] = "Detalle del registro";
+}
+
+<h1 class="h3">Detalle del registro</h1>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">#</dt>
+    <dd class="col-sm-9">@Model.IdRegistroOCN</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Zona)</dt>
+    <dd class="col-sm-9">@Model.Zona?.Nombre</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Problematica)</dt>
+    <dd class="col-sm-9">@Model.Problematica?.Nombre</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.FechaRegistro)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.FechaRegistro)</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Descripcion)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.Descripcion)</dd>
+</dl>
+
+<a asp-action="Edit" asp-route-id="@Model.IdRegistroOCN" class="btn btn-primary">Editar</a>
+<a asp-action="Index" class="btn btn-secondary">Regresar a la lista</a>

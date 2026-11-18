@@ -1,0 +1,31 @@
+@model Zona
+
+@{
+    ViewData["Title"] = "Dar de baja";
+}
+
+<h1 class="h3">¿Seguro que quieres dar de baja este registro?</h1>
+<div class="alert alert-warning">El registro no se borra de la base de datos: se marca como inactivo y deja de aparecer en la lista.</div>
+
+<dl class="row">
+    <dt class="col-sm-3">#</dt>
+    <dd class="col-sm-9">@Model.IdZona</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.CodigoZona)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.CodigoZona)</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Nombre)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.Nombre)</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Division)</dt>
+    <dd class="col-sm-9">@Model.Division?.Nombre</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.TipoZona)</dt>
+    <dd class="col-sm-9">@Model.TipoZona?.Nombre</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.DescripcionGeneral)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.DescripcionGeneral)</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.ReferenciaGeograficaAprox)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(_ => Model.ReferenciaGeograficaAprox)</dd>
+</dl>
+
+<form asp-action="Delete" asp-route-id="@Model.IdZona" method="post">
+    <input type="hidden" asp-for="IdZona" />
+    <button type="submit" class="btn btn-danger">Dar de baja</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

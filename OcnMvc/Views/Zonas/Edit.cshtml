@@ -1,0 +1,60 @@
+@model Zona
+
+@{
+    ViewData["Title"] = "Editar zona";
+}
+
+<h1 class="h3">Editar zona</h1>
+<hr />
+
+<div class="row">
+<div class="col-md-8 col-lg-6">
+<form asp-action="Edit" asp-route-id="@Model.IdZona" method="post">
+    @* El tag helper <form method="post"> agrega el AntiForgeryToken (campo oculto __RequestVerificationToken) *@
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+    <input type="hidden" asp-for="IdZona" />
+
+    <div class="mb-3">
+        <label asp-for="CodigoZona" class="form-label"></label>
+        <input asp-for="CodigoZona" class="form-control" />
+        <span asp-validation-for="CodigoZona" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Nombre" class="form-label"></label>
+        <input asp-for="Nombre" class="form-control" />
+        <span asp-validation-for="Nombre" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="IdDivision" class="form-label"></label>
+        <select asp-for="IdDivision" asp-items="ViewBag.IdDivision" class="form-select">
+            <option value="">-- Selecciona --</option>
+        </select>
+        <span asp-validation-for="IdDivision" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="IdTipoZona" class="form-label"></label>
+        <select asp-for="IdTipoZona" asp-items="ViewBag.IdTipoZona" class="form-select">
+            <option value="">-- Selecciona --</option>
+        </select>
+        <span asp-validation-for="IdTipoZona" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="DescripcionGeneral" class="form-label"></label>
+        <textarea asp-for="DescripcionGeneral" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="DescripcionGeneral" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="ReferenciaGeograficaAprox" class="form-label"></label>
+        <input asp-for="ReferenciaGeograficaAprox" class="form-control" />
+        <span asp-validation-for="ReferenciaGeograficaAprox" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+</div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
