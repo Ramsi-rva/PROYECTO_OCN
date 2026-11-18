@@ -10,3 +10,9 @@ obj/
 
 # Otros
 *.log
+
+# Configuración local (cadena de conexión de cada quien).
+# Para empezar: copia OcnMvc/appsettings.example.json como appsettings.json y ajusta Server=
+appsettings.json
+appsettings.*.json
+!appsettings.example.json
