@@ -1,0 +1,12 @@
+# Build
+bin/
+obj/
+
+# Visual Studio / VS Code
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Otros
+*.log
