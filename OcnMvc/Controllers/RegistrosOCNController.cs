@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using OcnMvc.Data;
+using Microsoft.Data.SqlClient;
+using OcnMvc.Datos;
 using OcnMvc.Models;
 
 namespace OcnMvc.Controllers;
@@ -9,33 +9,29 @@ namespace OcnMvc.Controllers;
 // Controlador de la tabla ocn.registroocn
 public class RegistrosOCNController : Controller
 {
-    private readonly OcnDbContext _context;
+    private readonly RegistroOCNDatos _datos;
+    private readonly ZonaDatos _zonas;
+    private readonly ProblematicaDatos _problematicas;
 
-    public RegistrosOCNController(OcnDbContext context)
+    public RegistrosOCNController(RegistroOCNDatos datos, ZonaDatos zonas, ProblematicaDatos problematicas)
     {
-        _context = context;
+        _datos = datos;
+        _zonas = zonas;
+        _problematicas = problematicas;
     }
 
     // Muestra la lista de registros
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
-        var lista = _context.RegistroOCN
-            .Include(x => x.Zona)
-            .Include(x => x.Problematica)
-            .AsQueryable();
-        lista = lista.Where(x => x.Activo);
-        return View(await lista.ToListAsync());
+        return View(_datos.Listar());
     }
 
     // Muestra el detalle de un registro
-    public async Task<IActionResult> Details(int? id)
+    public IActionResult Details(int? id)
     {
         if (id == null) return NotFound();
 
-        var item = await _context.RegistroOCN
-            .Include(x => x.Zona)
-            .Include(x => x.Problematica)
-            .FirstOrDefaultAsync(m => m.IdRegistroOCN == id);
+        var item = _datos.Buscar(id.Value);
         if (item == null) return NotFound();
         return View(item);
     }
@@ -43,8 +39,8 @@ public class RegistrosOCNController : Controller
     // Llena las listas desplegables de las llaves foráneas
     private void CargarListas(RegistroOCN? item = null)
     {
-        ViewData["IdZona"] = new SelectList(_context.Zona.Where(x => x.Activo), "IdZona", "Nombre", item?.IdZona);
-        ViewData["IdProblematica"] = new SelectList(_context.Problematica.Where(x => x.Activo), "IdProblematica", "Nombre", item?.IdProblematica);
+        ViewData["IdZona"] = new SelectList(_zonas.Listar(), "IdZona", "Nombre", item?.IdZona);
+        ViewData["IdProblematica"] = new SelectList(_problematicas.Listar(), "IdProblematica", "Nombre", item?.IdProblematica);
     }
 
     // Muestra el formulario para agregar
@@ -57,33 +53,32 @@ public class RegistrosOCNController : Controller
     // Guarda el registro nuevo
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("IdZona,IdProblematica,Descripcion,FechaRegistro,Activo")] RegistroOCN item)
+    public IActionResult Create([Bind("IdZona,IdProblematica,Descripcion,FechaRegistro")] RegistroOCN item)
     {
         if (ModelState.IsValid)
         {
             try
             {
-                _context.Add(item);
-                await _context.SaveChangesAsync();
+                _datos.Insertar(item);
                 TempData["Mensaje"] = "Registro creado.";
                 return RedirectToAction(nameof(Index));
             }
-            catch (DbUpdateException ex)
+            catch (SqlException ex) when (EsErrorDeNegocio(ex))
             {
-                // error de la base: llave repetida, referencia inválida, etc.
-                ModelState.AddModelError(string.Empty, "No se pudo guardar: " + (ex.InnerException?.Message ?? ex.Message));
+                // Mensaje que lanzó el procedimiento almacenado (throw)
+                ModelState.AddModelError(string.Empty, ex.Message);
             }
         }
         CargarListas(item);
         return View(item);
     }
 
-    // Muestra el formulario para modificar
-    public async Task<IActionResult> Edit(int? id)
+    // Muestra el formulario para editar
+    public IActionResult Edit(int? id)
     {
         if (id == null) return NotFound();
 
-        var item = await _context.RegistroOCN.FirstOrDefaultAsync(m => m.IdRegistroOCN == id);
+        var item = _datos.Buscar(id.Value);
         if (item == null) return NotFound();
         CargarListas(item);
         return View(item);
@@ -92,7 +87,7 @@ public class RegistrosOCNController : Controller
     // Guarda los cambios del registro
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, [Bind("IdRegistroOCN,IdZona,IdProblematica,Descripcion,FechaRegistro,Activo")] RegistroOCN item)
+    public IActionResult Edit(int id, [Bind("IdRegistroOCN,IdZona,IdProblematica,Descripcion,FechaRegistro")] RegistroOCN item)
     {
         if (id != item.IdRegistroOCN) return NotFound();
 
@@ -100,51 +95,49 @@ public class RegistrosOCNController : Controller
         {
             try
             {
-                _context.Update(item);
-                await _context.SaveChangesAsync();
+                _datos.Actualizar(item);
                 TempData["Mensaje"] = "Registro actualizado.";
                 return RedirectToAction(nameof(Index));
             }
-            catch (DbUpdateConcurrencyException)
+            catch (SqlException ex) when (EsErrorDeNegocio(ex))
             {
-                if (!await _context.RegistroOCN.AnyAsync(e => e.IdRegistroOCN == id)) return NotFound();
-                throw;
-            }
-            catch (DbUpdateException ex)
-            {
-                ModelState.AddModelError(string.Empty, "No se pudo guardar: " + (ex.InnerException?.Message ?? ex.Message));
+                ModelState.AddModelError(string.Empty, ex.Message);
             }
         }
         CargarListas(item);
         return View(item);
     }
 
-    // Pide confirmación para eliminar
-    public async Task<IActionResult> Delete(int? id)
+    // Muestra la confirmación para eliminar
+    public IActionResult Delete(int? id)
     {
         if (id == null) return NotFound();
 
-        var item = await _context.RegistroOCN
-            .Include(x => x.Zona)
-            .Include(x => x.Problematica)
-            .FirstOrDefaultAsync(m => m.IdRegistroOCN == id);
+        var item = _datos.Buscar(id.Value);
         if (item == null) return NotFound();
         return View(item);
     }
 
-    // Da de baja el registro
+    // Da de baja el registro (borrado lógico)
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int id)
+    public IActionResult DeleteConfirmed(int id)
     {
-        var item = await _context.RegistroOCN.FirstOrDefaultAsync(m => m.IdRegistroOCN == id);
-        if (item != null)
+        try
         {
-            // solo se marca como inactivo, no se borra de la base
-            item.Activo = false;
-            await _context.SaveChangesAsync();
+            _datos.Eliminar(id);
             TempData["Mensaje"] = "Registro dado de baja.";
         }
+        catch (SqlException ex) when (EsErrorDeNegocio(ex))
+        {
+            TempData["Mensaje"] = ex.Message;
+        }
         return RedirectToAction(nameof(Index));
+    }
+
+    // Los errores 50001 a 50004 los lanzan los procedimientos con throw
+    private static bool EsErrorDeNegocio(SqlException ex)
+    {
+        return ex.Number >= 50001 && ex.Number <= 50004;
     }
 }
