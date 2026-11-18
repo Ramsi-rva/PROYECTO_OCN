@@ -41,6 +41,8 @@ public class RegistrosOCNController : Controller
     {
         ViewData["IdZona"] = new SelectList(_zonas.Listar(), "IdZona", "Nombre", item?.IdZona);
         ViewData["IdProblematica"] = new SelectList(_problematicas.Listar(), "IdProblematica", "Nombre", item?.IdProblematica);
+        ViewData["Intensidad"] = new SelectList(RegistroOCN.Intensidades, item?.Intensidad ?? 1);
+        ViewData["Frecuencia"] = new SelectList(RegistroOCN.Frecuencias, item?.Frecuencia ?? "Ocasional");
     }
 
     // Muestra el formulario para agregar
@@ -53,7 +55,7 @@ public class RegistrosOCNController : Controller
     // Guarda el registro nuevo
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Create([Bind("IdZona,IdProblematica,Descripcion,FechaRegistro")] RegistroOCN item)
+    public IActionResult Create([Bind("IdZona,IdProblematica,Descripcion,Intensidad,Frecuencia,FechaRegistro")] RegistroOCN item)
     {
         if (ModelState.IsValid)
         {
@@ -87,7 +89,7 @@ public class RegistrosOCNController : Controller
     // Guarda los cambios del registro
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Edit(int id, [Bind("IdRegistroOCN,IdZona,IdProblematica,Descripcion,FechaRegistro")] RegistroOCN item)
+    public IActionResult Edit(int id, [Bind("IdRegistroOCN,IdZona,IdProblematica,Descripcion,Intensidad,Frecuencia,FechaRegistro")] RegistroOCN item)
     {
         if (id != item.IdRegistroOCN) return NotFound();
 

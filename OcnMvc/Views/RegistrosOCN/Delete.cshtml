@@ -14,6 +14,10 @@
     <dd class="col-sm-9">@Model.Zona?.Nombre</dd>
     <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Problematica)</dt>
     <dd class="col-sm-9">@Model.Problematica?.Nombre</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Intensidad)</dt>
+    <dd class="col-sm-9">@Model.Intensidad / 5</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Frecuencia)</dt>
+    <dd class="col-sm-9">@Model.Frecuencia</dd>
     <dt class="col-sm-3">@Html.DisplayNameFor(m => m.FechaRegistro)</dt>
     <dd class="col-sm-9">@Html.DisplayFor(_ => Model.FechaRegistro)</dd>
     <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Descripcion)</dt>

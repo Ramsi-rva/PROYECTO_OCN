@@ -324,7 +324,7 @@ begin
     set nocount on;
 
     select r.idregistroocn, r.idzona, r.idproblematica,
-           r.descripcion, r.fecharegistro, r.activo,
+           r.descripcion, r.intensidad, r.frecuencia, r.fecharegistro, r.activo,
            z.nombre as nombrezona,
            p.nombre as nombreproblematica
     from ocn.registroocn r
@@ -343,7 +343,7 @@ begin
     set nocount on;
 
     select r.idregistroocn, r.idzona, r.idproblematica,
-           r.descripcion, r.fecharegistro, r.activo,
+           r.descripcion, r.intensidad, r.frecuencia, r.fecharegistro, r.activo,
            z.nombre as nombrezona,
            p.nombre as nombreproblematica
     from ocn.registroocn r
@@ -359,6 +359,8 @@ create or alter procedure ocn.pa_registroocn_insertar
     @idzona          int,
     @idproblematica  int,
     @descripcion     varchar(500) = null,
+    @intensidad      tinyint = 1,
+    @frecuencia      varchar(20) = 'Ocasional',
     @fecharegistro   datetime2 = null,
     @idregistroocn   int output
 as
@@ -371,8 +373,8 @@ begin
     if not exists (select 1 from ocn.problematica where idproblematica = @idproblematica and activo = 1)
         throw 50003, 'La problemática no existe o está inactiva.', 1;
 
-    insert into ocn.registroocn (idzona, idproblematica, descripcion, fecharegistro, activo)
-    values (@idzona, @idproblematica, @descripcion, isnull(@fecharegistro, sysdatetime()), 1);
+    insert into ocn.registroocn (idzona, idproblematica, descripcion, intensidad, frecuencia, fecharegistro, activo)
+    values (@idzona, @idproblematica, @descripcion, @intensidad, @frecuencia, isnull(@fecharegistro, sysdatetime()), 1);
 
     set @idregistroocn = scope_identity();
 end;
@@ -384,6 +386,8 @@ create or alter procedure ocn.pa_registroocn_actualizar
     @idzona          int,
     @idproblematica  int,
     @descripcion     varchar(500) = null,
+    @intensidad      tinyint,
+    @frecuencia      varchar(20),
     @fecharegistro   datetime2
 as
 begin
@@ -402,6 +406,8 @@ begin
     set idzona         = @idzona,
         idproblematica = @idproblematica,
         descripcion    = @descripcion,
+        intensidad     = @intensidad,
+        frecuencia     = @frecuencia,
         fecharegistro  = @fecharegistro
     where idregistroocn = @idregistroocn;
 end;
@@ -433,7 +439,8 @@ go
 --
 -- declare @nuevo int;
 -- exec ocn.pa_registroocn_insertar @idzona = 1, @idproblematica = 1,
---      @descripcion = 'prueba', @idregistroocn = @nuevo output;
+--      @descripcion = 'prueba', @intensidad = 3, @frecuencia = 'Frecuente',
+--      @idregistroocn = @nuevo output;
 -- select @nuevo as id_generado;
 --
 -- select * from ocn.registroocn;

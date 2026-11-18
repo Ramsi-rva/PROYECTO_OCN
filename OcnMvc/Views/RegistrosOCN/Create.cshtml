@@ -27,6 +27,19 @@
         </select>
         <span asp-validation-for="IdProblematica" class="text-danger"></span>
     </div>
+    <div class="row">
+        <div class="col-sm-6 mb-3">
+            <label asp-for="Intensidad" class="form-label"></label>
+            <select asp-for="Intensidad" asp-items="ViewBag.Intensidad" class="form-select"></select>
+            <div class="form-text">1 = muy baja, 5 = muy alta</div>
+            <span asp-validation-for="Intensidad" class="text-danger"></span>
+        </div>
+        <div class="col-sm-6 mb-3">
+            <label asp-for="Frecuencia" class="form-label"></label>
+            <select asp-for="Frecuencia" asp-items="ViewBag.Frecuencia" class="form-select"></select>
+            <span asp-validation-for="Frecuencia" class="text-danger"></span>
+        </div>
+    </div>
     <div class="mb-3">
         <label asp-for="FechaRegistro" class="form-label"></label>
         @if (Model == null)

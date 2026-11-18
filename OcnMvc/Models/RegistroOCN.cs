@@ -21,6 +21,22 @@ public class RegistroOCN
     [Display(Name = "Descripción")]
     public string? Descripcion { get; set; }
 
+    // Escala del 1 (muy baja) al 5 (muy alta). En la base: tinyint con check 1-5.
+    [Required(ErrorMessage = "Selecciona la intensidad.")]
+    [Range(1, 5, ErrorMessage = "La intensidad debe estar entre {1} y {2}.")]
+    [Display(Name = "Intensidad")]
+    public byte Intensidad { get; set; } = 1;
+
+    // Valores permitidos por el check de la base: Ocasional, Frecuente, Constante, Primera Aparición.
+    [Required(ErrorMessage = "Selecciona la frecuencia.")]
+    [RegularExpression("^(Ocasional|Frecuente|Constante|Primera Aparición)$", ErrorMessage = "Frecuencia no válida.")]
+    [Display(Name = "Frecuencia")]
+    public string Frecuencia { get; set; } = "Ocasional";
+
+    // Opciones para las listas desplegables de las vistas.
+    public static readonly byte[] Intensidades = { 1, 2, 3, 4, 5 };
+    public static readonly string[] Frecuencias = { "Ocasional", "Frecuente", "Constante", "Primera Aparición" };
+
     // En la base tiene valor por omisión sysdatetime(); aquí se propone la fecha actual.
     [Required(ErrorMessage = "La fecha de registro es obligatoria.")]
     [Display(Name = "Fecha de registro")]

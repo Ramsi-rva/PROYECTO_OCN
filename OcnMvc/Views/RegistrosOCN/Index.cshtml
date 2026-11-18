@@ -22,6 +22,8 @@ else
             <th>#</th>
             <th>@Html.DisplayNameFor(m => m.Zona)</th>
             <th>@Html.DisplayNameFor(m => m.Problematica)</th>
+            <th>@Html.DisplayNameFor(m => m.Intensidad)</th>
+            <th>@Html.DisplayNameFor(m => m.Frecuencia)</th>
             <th>@Html.DisplayNameFor(m => m.FechaRegistro)</th>
             <th>@Html.DisplayNameFor(m => m.Descripcion)</th>
             <th class="text-end">Acciones</th>
@@ -34,6 +36,8 @@ else
                 <td>@item.IdRegistroOCN</td>
                 <td>@item.Zona?.Nombre</td>
                 <td>@item.Problematica?.Nombre</td>
+                <td>@item.Intensidad / 5</td>
+                <td>@item.Frecuencia</td>
                 <td>@Html.DisplayFor(_ => item.FechaRegistro)</td>
                 <td>@item.Descripcion</td>
                 <td class="text-end text-nowrap">

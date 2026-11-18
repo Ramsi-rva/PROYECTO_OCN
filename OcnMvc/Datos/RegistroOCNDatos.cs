@@ -104,6 +104,8 @@ public class RegistroOCNDatos
         comando.Parameters.Add("@idproblematica", SqlDbType.Int).Value = registro.IdProblematica;
         comando.Parameters.Add("@descripcion", SqlDbType.VarChar, 500).Value =
             (object?)registro.Descripcion ?? DBNull.Value;
+        comando.Parameters.Add("@intensidad", SqlDbType.TinyInt).Value = registro.Intensidad;
+        comando.Parameters.Add("@frecuencia", SqlDbType.VarChar, 20).Value = registro.Frecuencia;
         comando.Parameters.Add("@fecharegistro", SqlDbType.DateTime2).Value = registro.FechaRegistro;
     }
 
@@ -122,6 +124,8 @@ public class RegistroOCNDatos
             Descripcion    = lector.IsDBNull(lector.GetOrdinal("descripcion"))
                                  ? null
                                  : lector.GetString(lector.GetOrdinal("descripcion")),
+            Intensidad     = lector.GetByte(lector.GetOrdinal("intensidad")),
+            Frecuencia     = lector.GetString(lector.GetOrdinal("frecuencia")),
             FechaRegistro  = lector.GetDateTime(lector.GetOrdinal("fecharegistro")),
             Activo         = lector.GetBoolean(lector.GetOrdinal("activo")),
             Zona = new Zona
